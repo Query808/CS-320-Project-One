@@ -1,0 +1,58 @@
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Skylan Turnbow
+ * CS320
+ * May 24th, 2026
+ */
+public class ContactService {
+
+    private final Map<String, Contact> contacts = new HashMap<>();
+
+    public void addContact(Contact contact) {
+        if (contact == null) {
+            throw new IllegalArgumentException("Contact cannot be null");
+        }
+        if (contacts.containsKey(contact.getContactId())) {
+            throw new IllegalArgumentException("Contact ID already exists");
+        }
+        contacts.put(contact.getContactId(), contact);
+    }
+
+    public void deleteContact(String contactId) {
+        if (!contacts.containsKey(contactId)) {
+            throw new IllegalArgumentException("Contact ID does not exist");
+        }
+        contacts.remove(contactId);
+    }
+
+    public void updateFirstName(String contactId, String firstName) {
+        requireExists(contactId).setFirstName(firstName);
+    }
+
+    public void updateLastName(String contactId, String lastName) {
+        requireExists(contactId).setLastName(lastName);
+    }
+
+    public void updatePhone(String contactId, String phone) {
+        requireExists(contactId).setPhone(phone);
+    }
+
+    public void updateAddress(String contactId, String address) {
+        requireExists(contactId).setAddress(address);
+    }
+
+    public Contact getContact(String contactId) {
+        return contacts.get(contactId);
+    }
+
+    // Returns the contact if it exists, otherwise throws. One map lookup only.
+    private Contact requireExists(String contactId) {
+        Contact contact = contacts.get(contactId);
+        if (contact == null) {
+            throw new IllegalArgumentException("Contact ID does not exist");
+        }
+        return contact;
+    }
+}
